@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Sofia Jürgenson, veebiprogrammeerimine</title>
+	<style>
+		.leht { display: none; }
+		.leht.aktiivne { display: block; }
+		body { margin: 0; padding: 8px; }
+	</style>
+</head>
+<body>
+
+<!-- AVALEHT -->
+<div class="leht" id="avaleht" data-bg="#98cf95">
+	<img src="pic/veebiprogrammeerimine_2026_ID.png" alt="Veebiprogrammeerimine bänner">
+	<h1>Sofia Jürgenson, veebiprogrammeerimise kursusel</h1>
+	<p>See leht on loodud veebiprogrammeerimise kursusel <a style="color: #c45c6a;" href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu</p>
+	<p><a style="color: #cb70ad;" href="#minust">Minust</a> | <a style="color: #707ccb;" href="#vanasona">Tänane vanasõna</a></p>
+	<p id="kuupaev"></p>
+	<hr>
+	<img src="pic/soovad.gif" alt="nomnom">
+	<hr>
+	<form action="/regvisit" method="GET">
+    <input type="submit" value="Registreeri külastus">
+</form>
+<form action="/visitlog" method="GET">
+    <input type="submit" value="Vaata viimast külastust">
+</form>
+</div>
+
+<!-- VANASÕNA LEHT -->
+<div class="leht" id="vanasona" data-bg="#95c1cf">
+	<img src="pic/veebiprogrammeerimine_2026_ID.png" alt="Veebiprogrammeerimine bänner">
+	<h1>Tänane Eesti vanasõna</h1>
+	<p>Siin näed tänaseks päevaks loositud vanasõna: <strong id="vanasona-tekst">Kes teisele auku kaevab, see ise sisse kukub.</strong></p>
+	<img src="pic/joy.jpeg" alt="juhuu">
+	<p><a style="color: #497d69;" href="#avaleht">Tagasi avalehele</a></p>
+	<hr>
+</div>
+
+<!-- MINUST LEHT -->
+<div class="leht" id="minust" data-bg="#eab4ec">
+	<img src="pic/veebiprogrammeerimine_2026_ID.png" alt="Veebiprogrammeerimine bänner">
+	<h1>Minust</h1>
+	<p>Minu nimi on Sofia Jürgenson, olen 19-aastane tudeng. Minu hobideks on videomängude mängimine, lugemine, muusika kuulamine, laulmine ja tantsimine. Lõbus fakt minu kohta on see, et olen suur horror mängude fänn, kuigi olen väga arglik</p>
+	<h2>Miks ma tulin TLÜ-sse õppima?</h2>
+	<p>Viimati tekkis huvi IT valdkonna vastu. TLÜ-s on head IT erialad, mis tundusid huvitavad. Õpin interaktsioonidisaini suunas, mis laseb mul säilitada loovust õppides IT-d.</p>
+	<img src="pic/bubblegum.jpeg" alt="adventure time!">
+	<p><a style="color: #4a0f21;" href="#avaleht">Tagasi avalehele</a></p>
+	<hr>
+</div>
+
+<script>
+	// Lehtede vahetamine lingi (#hash) järgi
+	function naitaLehte() {
+		var id = location.hash.replace('#', '') || 'avaleht';
+		var leht = document.getElementById(id) || document.getElementById('avaleht');
+		document.querySelectorAll('.leht').forEach(function (el) {
+			el.classList.remove('aktiivne');
+		});
+		leht.classList.add('aktiivne');
+		document.body.style.backgroundColor = leht.dataset.bg;
+	}
+
+	// Päev, kuupäev ja kellaaeg avalehele
+	function uuendaAega() {
+		var nd = new Date();
+		var paev = nd.toLocaleDateString('et-EE', { weekday: 'long' });
+		var kuupaev = nd.toLocaleDateString('et-EE', { day: 'numeric', month: 'long', year: 'numeric' });
+		var kell = nd.toLocaleTimeString('et-EE');
+		document.getElementById('kuupaev').textContent =
+			'Täna on ' + paev + ', ' + kuupaev + ' ja kell on ' + kell + '.';
+	}
+
+	window.addEventListener('hashchange', naitaLehte);
+	naitaLehte();
+	uuendaAega();
+	setInterval(uuendaAega, 1000);
+</script>
+
+</body>
+</html>
