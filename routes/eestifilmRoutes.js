@@ -9,7 +9,10 @@ const { eestifilm,
         eestifilmifilmidAdd,
         eestifilmifilmidAddPost,
         eestifilmiametidAdd,
-        eestifilmiametidAddPost
+        eestifilmiametidAddPost,
+        eestifilmiseosed,
+        eestifilmiseosedAdd,
+        eestifilmiseosedAddPost
     } = require('../controllers/eestifilmControllers');
 
 router.route('/').get(eestifilm);
@@ -27,5 +30,11 @@ router.route('/eestifilmifilmid_lisa')
 router.route('/eestifilmiametid_lisa')
     .get(eestifilmiametidAdd)
     .post(eestifilmiametidAddPost);
+
+    router.route('/eestifilmiseosed').get(eestifilmiseosed);
+
+router.route('/eestifilmiseosed_lisa')
+    .get(eestifilmiseosedAdd)
+    .post(eestifilmiseosedAddPost);
 
 module.exports = router;

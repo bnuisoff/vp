@@ -313,13 +313,163 @@ const eestifilmiametidAddPost = async (req, res) => {
 	}
 };
 
+//väike abifunktsioon, et ühendust mitte kogu aeg kirjutada
+const getConnection = () => mysql.createConnection({
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASSWORD,
+	database: process.env.DB_DATABASE
+});
+
+//rippmenüüde andmed
+const loadSelectLists = async (conn) => {
+	const [persons] = await conn.execute('SELECT id, first_name, last_name FROM person ORDER BY last_name, first_name');
+	const [movies] = await conn.execute('SELECT id, title FROM movie ORDER BY title');
+	const [professions] = await conn.execute('SELECT id, title FROM profession ORDER BY title');
+	return { persons, movies, professions };
+};
+
+//@desc page for adding person-movie-profession relations
+//@route GET /eestifilm/eestifilmiseosed_lisa
+//@access public
+const eestifilmiseosedAdd = async (req, res) => {
+	let conn;
+	try {
+		conn = await getConnection();
+		const lists = await loadSelectLists(conn);
+		res.render('eestifilmiseosed_lisa', {
+			notice: '',
+			...lists,
+			personInput: null,
+			movieInput: null,
+			professionInput: null,
+			characterInput: ''
+		});
+	}
+	catch (err) {
+		console.log('Andmete laadimine ebaõnnestus: ' + err);
+		res.render('eestifilmiseosed_lisa', {
+			notice: 'Andmete laadimine ebaõnnestus!',
+			persons: [], movies: [], professions: [],
+			personInput: null, movieInput: null, professionInput: null, characterInput: ''
+		});
+	}
+	finally {
+		if (conn) {
+			await conn.end();
+		}
+	}
+};
+
+//@desc saving a relation
+//@route POST /eestifilm/eestifilmiseosed_lisa
+//@access public
+const eestifilmiseosedAddPost = async (req, res) => {
+	console.log(req.body);
+	const personId = Number(req.body.personInput);
+	const movieId = Number(req.body.movieInput);
+	const professionId = Number(req.body.professionInput);
+	const character = (req.body.characterInput || '').trim();
+
+	let conn;
+	try {
+		conn = await getConnection();
+		const lists = await loadSelectLists(conn);
+
+		// väärtused tagasi vormi (null = pole valitud)
+		const form = {
+			...lists,
+			personInput: personId || null,
+			movieInput: movieId || null,
+			professionInput: professionId || null,
+			characterInput: character
+		};
+
+		const errors = [];
+		if (!Number.isInteger(personId) || personId < 1) errors.push('Isik on valimata!');
+		if (!Number.isInteger(movieId) || movieId < 1) errors.push('Film on valimata!');
+		if (!Number.isInteger(professionId) || professionId < 1) errors.push('Amet on valimata!');
+		if (character.length > 100) errors.push('Tegelase nimi on liiga pikk (max 100 märki)!');
+
+		if (errors.length > 0) {
+			return res.render('eestifilmiseosed_lisa', { notice: errors.join(' '), ...form });
+		}
+
+		// kas täpselt sama seos on juba olemas?
+		const [exists] = await conn.execute(
+			'SELECT id FROM person_in_movie WHERE person_id = ? AND movie_id = ? AND profession_id = ?',
+			[personId, movieId, professionId]
+		);
+		if (exists.length > 0) {
+			return res.render('eestifilmiseosed_lisa', { notice: 'Selline seos on juba olemas!', ...form });
+		}
+
+		await conn.execute(
+			'INSERT INTO person_in_movie (person_id, movie_id, profession_id, character_name) VALUES (?, ?, ?, ?)',
+			[personId, movieId, professionId, character === '' ? null : character]
+		);
+		res.render('eestifilmiseosed_lisa', {
+			notice: 'Seos salvestatud!',
+			...lists,
+			personInput: null,
+			movieInput: null,
+			professionInput: null,
+			characterInput: ''
+		});
+	}
+	catch (err) {
+		console.log('Seose salvestamine ebaõnnestus: ' + err);
+		res.render('eestifilmiseosed_lisa', {
+			notice: 'Salvestamine ebaõnnestus!',
+			persons: [], movies: [], professions: [],
+			personInput: null, movieInput: null, professionInput: null, characterInput: character
+		});
+	}
+	finally {
+		if (conn) {
+			await conn.end();
+		}
+	}
+};
+
+//@desc page listing all relations
+//@route GET /eestifilm/eestifilmiseosed
+//@access public
+const eestifilmiseosed = async (req, res) => {
+	let conn;
+	try {
+		conn = await getConnection();
+		const sqlReq = `SELECT person.first_name, person.last_name, movie.title AS movie_title,
+			profession.title AS profession_title, person_in_movie.character_name
+			FROM person_in_movie
+			JOIN person ON person_in_movie.person_id = person.id
+			JOIN movie ON person_in_movie.movie_id = movie.id
+			JOIN profession ON person_in_movie.profession_id = profession.id
+			ORDER BY movie.title, person.last_name`;
+		const [sqlRes] = await conn.execute(sqlReq);
+		res.render('eestifilmiseosed', { relationList: sqlRes });
+	}
+	catch (err) {
+		console.log('Seoste lugemine ebaõnnestus: ' + err);
+		res.render('eestifilmiseosed', { relationList: [] });
+	}
+	finally {
+		if (conn) {
+			await conn.end();
+		}
+	}
+};
+
 module.exports = {
-    eestifilm,
-    eestifilminimesed,
-    eestifilminimesedAdd,
-    eestifilminimesedAddPost,
-    eestifilmifilmidAdd,
-    eestifilmifilmidAddPost,
-    eestifilmiametidAdd,
-    eestifilmiametidAddPost
+	eestifilm,
+	eestifilminimesed,
+	eestifilminimesedAdd,
+	eestifilminimesedAddPost,
+	eestifilmifilmidAdd,
+	eestifilmifilmidAddPost,
+	eestifilmiametidAdd,
+	eestifilmiametidAddPost,
+	eestifilmiseosedAdd,
+	eestifilmiseosedAddPost,
+	eestifilmiseosed
 };

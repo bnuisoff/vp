@@ -3,7 +3,7 @@ const path = require('path');
 const dateTimeET = require('../src/dateTimeET.js');
 
 const vanasonaFail = path.join(__dirname, '..', 'public', 'txt', 'vanasonad.txt');
-const visitsFail = path.join(__dirname, '..', 'visits.txt');
+/*const visitsFail = path.join(__dirname, '..', 'visits.txt');*/
 
 //@desc home page
 //@route GET /
@@ -39,53 +39,9 @@ const vanasona = async (req, res) => {
 	}
 };
 
-//@desc visit registration form
-//@route GET /regvisit
-//@access public
-const regvisit = (req, res) => {
-	res.render('regvisit', { message: '' });
-};
-
-//@desc saving a visit
-//@route POST /regvisit
-//@access public
-const regvisitPost = async (req, res) => {
-	try {
-		const rida = req.body.inputName + ',' + dateTimeET.date() + ',' + dateTimeET.time() + ';';
-		await fs.appendFile(visitsFail, rida);
-		res.render('regvisit', { message: 'Sinu nimi on salvestatud!' });
-	} catch (err) {
-		console.error(err);
-		res.render('regvisit', { message: 'Kahjuks ei õnnestunud sinu nime salvestada. Palun proovi hiljem uuesti.' });
-	}
-};
-
-//@desc last visit
-//@route GET /visitlog
-//@access public
-const visitlog = async (req, res) => {
-	try {
-		const data = await fs.readFile(visitsFail, 'utf-8');
-		const visits = data.split(';');
-		// viimane element on tühi (rida lõpeb semikooloniga), seega viimane külastus on eelviimane
-		if (visits.length < 2) {
-			return res.render('visitlog', { message: 'Külastusi pole veel registreeritud.' });
-		}
-		const [nimi, kuupaev, kellaaeg] = visits[visits.length - 2].split(',');
-		res.render('visitlog', {
-			message: 'Viimati registreeriti külastus ' + kuupaev + ', kell ' + kellaaeg + ' kui seda tegi ' + nimi + '.'
-		});
-	} catch (err) {
-		console.error(err);
-		res.render('visitlog', { message: 'Külastuste lugemine ebaõnnestus. Palun proovi hiljem uuesti.' });
-	}
-};
 
 module.exports = {
 	index,
 	minust,
 	vanasona,
-	regvisit,
-	regvisitPost,
-	visitlog
 };

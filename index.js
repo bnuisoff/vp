@@ -1,12 +1,12 @@
 
 const express = require('express');
-const fs = require('fs').promises;
+/*const fs = require('fs').promises;*/
 const path = require('path');
 const bodyParser = require('body-parser');
-const dateTimeET = require('./src/dateTimeET.js');
+/*const dateTimeET = require('./src/dateTimeET.js');*/
 
-const vanasonaFail = path.join(__dirname, 'public', 'txt', 'vanasonad.txt');
-const visitsFail = path.join(__dirname, 'visits.txt');
+/*const vanasonaFail = path.join(__dirname, 'public', 'txt', 'vanasonad.txt');*/
+/*const visitsFail = path.join(__dirname, 'visits.txt');*/
 /*const mysql = require('mysql2/promise');*/
 require('dotenv').config();
 
@@ -24,5 +24,9 @@ app.use('/', indexRouter);
 // eesti filmi marsrutid
 const eestifilmRouter = require('./routes/eestifilmRoutes');
 app.use('/eestifilm', eestifilmRouter);
+
+// külastuste marsrutid
+const visitsRouter = require('./routes/visitsRoutes');
+app.use('/visits', visitsRouter);
 	
 app.listen(5215);
