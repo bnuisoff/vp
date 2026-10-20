@@ -1,0 +1,20 @@
+<% const cur = (typeof active !== 'undefined') ? active : ''; %>
+<nav class="nav">
+	<a class="nav-link <%= cur === 'avaleht' ? 'active' : '' %>" href="/">Avaleht</a>
+
+	<details class="dropdown">
+		<summary class="nav-link <%= cur === 'eestifilm' ? 'active' : '' %>">Eesti film ▾</summary>
+		<div class="dropdown-menu">
+			<a href="/eestifilm">Eesti filmi avaleht</a>
+			<a href="/eestifilm/eestifilminimesed">Eesti filmiga seotud inimesed</a>
+			<a href="/eestifilm/eestifilminimesed_lisa">Lisa filmiga seotud inimesi</a>
+			<a href="/eestifilm/eestifilmifilmid_lisa">Lisa Eesti film</a>
+			<a href="/eestifilm/eestifilmiametid_lisa">Lisa filmiamet</a>
+			<a href="/eestifilm/eestifilmiseosed">Eesti filmide seosed</a>
+			<a href="/eestifilm/eestifilmiseosed_lisa">Lisa Eesti filmide seos</a>
+		</div>
+	</details>
+
+	<a class="nav-link <%= cur === 'vanasona' ? 'active' : '' %>" href="/vanasona">Tänane vanasõna</a>
+	<a class="nav-link <%= cur === 'minust' ? 'active' : '' %>" href="/minust">Minust</a>
+</nav>

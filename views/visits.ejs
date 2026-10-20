@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Viimane külastus</title>
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="page">
+
+	<div class="topbar">
+		<%- include('partials/nav', { active: '' }) %>
+	</div>
+
+	<h1>Viimane külastus</h1>
+	<div class="card"><p><%= message %></p></div>
+
+	<div class="btn-row">
+		<a class="btn btn-pink" href="/visits/regvisit">Registreeri külastus</a>
+		<a class="btn btn-green" href="/">Tagasi avalehele</a>
+	</div>
+</div>
+</body>
+</html>

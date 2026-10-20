@@ -2,33 +2,40 @@
 <html lang="et">
 <head>
     <meta charset="utf-8">
-    <title>Eesti filmi inimesed</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Lisa Eesti filmi inimesi</title>
+	<link rel="stylesheet" href="/style.css">
 </head>
-<style>
-    body { background-color: #a2c4d4; padding: 8px; }
-</style>
 <body>
-    <h1>Lisa Eesti filmiga seotud inimesi</h1>
-    <ul>
-    <li><a href="/">Tagasi avalehele</a> | 
-        <a href="/eestifilm">Tagasi Eesti filmi avalehele</a></li>
-    </ul>
-    <hr>
-  <form method="POST">
-	<label for="firstNameInput">Filmi inimese eesnimi:</label>
-	<input type="text" id="firstNameInput" name="firstNameInput" value="<%= firstNameInput %>" required>
-	<br>
-	<label for="lastNameInput">Filmi inimese perekonnanimi:</label>
-	<input type="text" id="lastNameInput" name="lastNameInput" value="<%= lastNameInput %>" required>
-	<br>
-	<label for="bornInput">Filmi inimese sünniaeg:</label>
-	<input type="date" id="bornInput" name="bornInput" value="<%= bornInput %>" required>
-	<br>
-	<label for="deceasedInput">Filmi inimese surmaaeg:</label>
-	<input type="date" id="deceasedInput" name="deceasedInput" value="<%= deceasedInput %>">
-	<br>
-	<input type="submit" value="Salvesta">
-</form>
-<p><%= notice %></p>
+<div class="page">
+
+	<div class="topbar">
+		<%- include('partials/nav', { active: 'eestifilm' }) %>
+	</div>
+
+	<a class="back" href="/eestifilm">← Eesti filmi avaleht</a>
+	<h1>Lisa Eesti filmiga seotud inimesi</h1>
+
+	<form class="card form" method="POST">
+		<div class="field">
+			<label for="firstNameInput">Filmi inimese eesnimi</label>
+			<input type="text" id="firstNameInput" name="firstNameInput" value="<%= firstNameInput %>" required>
+		</div>
+		<div class="field">
+			<label for="lastNameInput">Filmi inimese perekonnanimi</label>
+			<input type="text" id="lastNameInput" name="lastNameInput" value="<%= lastNameInput %>" required>
+		</div>
+		<div class="field">
+			<label for="bornInput">Filmi inimese sünniaeg</label>
+			<input type="date" id="bornInput" name="bornInput" value="<%= bornInput %>" required>
+		</div>
+		<div class="field">
+			<label for="deceasedInput">Filmi inimese surmaaeg</label>
+			<input type="date" id="deceasedInput" name="deceasedInput" value="<%= deceasedInput %>">
+		</div>
+		<input class="btn btn-pink" type="submit" value="Salvesta">
+	</form>
+	<p class="notice"><%= notice %></p>
+</div>
 </body>
 </html>
