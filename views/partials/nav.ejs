@@ -22,6 +22,14 @@
         </div>
     </details>
 
+<details class="dropdown">
+	<summary class="nav-link <%= cur === 'uudised' ? 'active' : '' %>">Uudised ▾</summary>
+	<div class="dropdown-menu">
+		<a href="/news">Loe uudiseid</a>
+		<a href="/news/addnews">Lisa uudis</a>
+	</div>
+</details>
+
     <a class="nav-link <%= cur === 'vanasona' ? 'active' : '' %>" href="/vanasona">Tänane vanasõna</a>
     <a class="nav-link <%= cur === 'minust' ? 'active' : '' %>" href="/minust">Minust</a>
 

@@ -15,6 +15,9 @@
 	</div>
 
 	<img class="banner" src="/pic/veebiprogrammeerimine_2026_ID.png" alt="Veebiprogrammeerimine bänner">
+
+	<h1>Sofia Jürgenson, veebiprogrammeerimise kursus</h1>
+	<p>See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu</p>
 	
 
 	<% if (photos.length > 0) { %>
@@ -35,9 +38,18 @@
     <img class="photo" src="/gallery/normal/<%= photo.filename %>" alt="<%= photo.alttext || 'Uusim avalik foto' %>">
 <% } %>
 
-
-	<h1>Sofia Jürgenson, veebiprogrammeerimise kursus</h1>
-	<p>See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu</p>
+<% if (latestNews) { %>
+    <div class="card news-side">
+        <% if (latestNews.filename) { %>
+            <img src="/news/normal/<%= latestNews.filename %>" alt="<%= latestNews.alttext || 'Uudise foto' %>">
+        <% } %>
+        <div class="news-body">
+            <h2>Uusim uudis: <%= latestNews.news_title %></h2>
+            <p class="news-meta">Lisatud <%= latestNews.created.toLocaleDateString('et-EE') %></p>
+            <p><%= latestNews.news_text %></p>
+        </div>
+    </div>
+<% } %>
 
 	<img class="photo" src="/pic/soovad.gif" alt="nomnom">
 

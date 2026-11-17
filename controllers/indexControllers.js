@@ -18,8 +18,9 @@ const vanasonaFail = path.join(__dirname, '..', 'public', 'txt', 'vanasonad.txt'
 //@access public
 const index = async (req, res) => {
     let conn;
-    let photos = [];
-    let photo = null;
+let photos = [];
+let photo = null;
+let latestNews = null;   // <- uus
     try {
         conn = await mysql.createConnection(dbConf);
         // kõik avalikud fotod (pisipiltide riba jaoks)
@@ -33,6 +34,14 @@ const index = async (req, res) => {
             [3]
         );
         if (newest.length > 0) photo = newest[0];
+                // uusim uudis, mis pole aegunud ega kustutatud
+        const [newsRows] = await conn.execute(
+            `SELECT news_title, news_text, created, filename, alttext
+             FROM news
+             WHERE expire_date >= CURDATE() AND deleted IS NULL
+             ORDER BY id DESC LIMIT 1`
+        );
+        if (newsRows.length > 0) latestNews = newsRows[0];
     } catch (err) {
         console.error(err);
     } finally {
@@ -43,7 +52,8 @@ const index = async (req, res) => {
         date: dateTimeET.date(),
         time: dateTimeET.time(),
         photos: photos,
-        photo: photo
+        photo: photo,
+        latestNews: latestNews
     });
 };
 

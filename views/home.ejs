@@ -17,7 +17,16 @@
 	<div class="card">
 		<p>Sisselogimine õnnestus.</p>
 	</div>
-
+	<% if (latestNews) { %>
+	<div class="card news-item">
+		<h2>Värskeim uudis: <%= latestNews.news_title %></h2>
+		<p class="news-meta">Lisatud <%= latestNews.created.toLocaleDateString('et-EE') %></p>
+		<% if (latestNews.filename) { %>
+			<img src="/news/normal/<%= latestNews.filename %>" alt="<%= latestNews.alttext %>">
+		<% } %>
+		<p><%= latestNews.news_text %></p>
+	</div>
+	<% } %>
 	<div class="btn-row">
 		<a class="btn btn-purple" href="/">Avalehele</a>
 	</div>

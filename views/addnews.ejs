@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Lisa uudis</title>
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="page">
+	<div class="topbar">
+		<%- include('partials/nav', { active: 'uudised' }) %>
+	</div>
+
+	<h1>Lisa uudis</h1>
+
+	<form class="card form" method="POST" enctype="multipart/form-data">
+		<div class="field">
+			<label for="titleInput">Uudise pealkiri</label>
+			<input type="text" id="titleInput" name="titleInput" placeholder="Uudise pealkiri ..." maxlength="100" value="<%= formData.title || '' %>" required>
+		</div>
+		<div class="field">
+			<label for="contentInput">Uudise sisu</label>
+			<textarea id="contentInput" name="contentInput" placeholder="Uudise sisu ..." rows="5" maxlength="2000" required><%= formData.content || '' %></textarea>
+		</div>
+		<div class="field">
+			<label for="expireInput">Uudise aegumiskuupäev</label>
+			<input type="date" id="expireInput" name="expireInput" value="<%= formData.expire || '' %>" required>
+		</div>
+		<div class="field">
+			<label for="photoInput">Uudise foto (pole kohustuslik)</label>
+			<input type="file" id="photoInput" name="photoInput" accept="image/jpeg,image/png,image/gif">
+		</div>
+		<div class="field">
+			<label for="altInput">Pildi kirjeldus</label>
+			<input type="text" id="altInput" name="altInput" maxlength="255" value="<%= formData.alt || '' %>">
+		</div>
+		<input class="btn btn-pink" type="submit" name="newsSubmit" value="Salvesta">
+	</form>
+	<p class="notice"><%= notice %></p>
+
+	<div class="btn-row">
+		<a class="btn btn-purple" href="/news">Loe uudiseid</a>
+	</div>
+</div>
+</body>
+</html>

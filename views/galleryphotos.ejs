@@ -35,7 +35,80 @@
     <div class="btn-row">
         <a class="btn btn-pink" href="/galleryphotos/upload">Lisa pilt</a>
     </div>
+        <div class="btn-row">
+        <a class="btn btn-pink" href="/galleryphotos/upload">Lisa pilt</a>
+    </div>
 
+</div>
+
+<!-- Suure pildi vaade -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+    <button type="button" class="lightbox-btn lightbox-close" id="lbClose" aria-label="Sulge">✕</button>
+    <button type="button" class="lightbox-btn lightbox-prev" id="lbPrev" aria-label="Eelmine">‹</button>
+    <figure class="lightbox-figure">
+        <img id="lbImg" src="" alt="">
+        <figcaption class="lightbox-caption" id="lbCaption"></figcaption>
+    </figure>
+    <button type="button" class="lightbox-btn lightbox-next" id="lbNext" aria-label="Järgmine">›</button>
+</div>
+
+<script>
+    const links = Array.from(document.querySelectorAll('.gallery-item a'));
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbCaption = document.getElementById('lbCaption');
+    let current = 0;
+
+    function show(index) {
+        // ring peale: viimasest järgmine on esimene ja vastupidi
+        current = (index + links.length) % links.length;
+        const a = links[current];
+        const img = a.querySelector('img');
+        lbImg.src = a.getAttribute('href');
+        lbImg.alt = img.alt;
+        lbCaption.textContent = img.alt ? img.alt + '  (' + (current + 1) + '/' + links.length + ')' : (current + 1) + '/' + links.length;
+    }
+
+    function openBox(index) {
+        show(index);
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden'; // taust ei kerigi kaasa
+    }
+
+    function closeBox() {
+        lightbox.classList.remove('open');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        lbImg.src = '';
+    }
+
+    links.forEach((a, i) => {
+        a.addEventListener('click', (e) => {
+            e.preventDefault(); // ära ava uues aknas
+            openBox(i);
+        });
+    });
+
+    document.getElementById('lbClose').addEventListener('click', closeBox);
+    document.getElementById('lbPrev').addEventListener('click', () => show(current - 1));
+    document.getElementById('lbNext').addEventListener('click', () => show(current + 1));
+
+    // klikk tumedale taustale sulgeb
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeBox();
+    });
+
+    // klaviatuur: ← → ja Esc
+    document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('open')) return;
+        if (e.key === 'Escape') closeBox();
+        if (e.key === 'ArrowLeft') show(current - 1);
+        if (e.key === 'ArrowRight') show(current + 1);
+    });
+</script>
+</body>
+</html>
 </div>
 </body>
 </html>

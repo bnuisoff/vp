@@ -286,6 +286,56 @@ textarea { min-height: 120px; resize: vertical; }
 	box-shadow: 0 4px 14px rgba(31, 52, 66, 0.15);
 }
 .gallery-item a { display: block; }
+/* Hover: pilt läheb natuke suuremaks */
+.gallery-item { position: relative; }
+.gallery-item:hover { z-index: 2; }
+.gallery-item img {
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.gallery-item:hover img {
+	transform: scale(1.08);
+	box-shadow: 0 10px 24px rgba(31, 52, 66, 0.3);
+}
+
+/* ===== Suure pildi vaade (lightbox) ===== */
+.lightbox {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	background: rgba(31, 52, 66, 0.9);
+}
+.lightbox.open { display: flex; }
+
+.lightbox-figure { margin: 0; text-align: center; max-width: 90vw; }
+.lightbox-figure img {
+	display: block;
+	margin: 0 auto;
+	max-width: 90vw;
+	max-height: 78vh;
+	border-radius: 14px;
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+.lightbox-caption { margin-top: 12px; color: #fff; font-size: 1rem; }
+
+.lightbox-btn {
+	position: absolute;
+	width: 52px;
+	height: 52px;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.85);
+	color: var(--ink);
+	font-size: 1.8rem;
+	line-height: 1;
+	cursor: pointer;
+}
+.lightbox-btn:hover { background: #fff; }
+.lightbox-close { top: 20px; right: 20px; font-size: 1.3rem; }
+.lightbox-prev { left: 20px; top: 50%; transform: translateY(-50%); }
+.lightbox-next { right: 20px; top: 50%; transform: translateY(-50%); }
 
 /* ===== Avalehe pildiriba ===== */
 .strip {
@@ -344,10 +394,41 @@ textarea {
 	font: inherit;
 }
 
+/* ===== Uudised ===== */
+.news-item img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	margin: 12px 0;
+	border-radius: 14px;
+}
+.news-meta { font-size: 0.9rem; opacity: 0.75; }
+/* Avalehe uudis: pilt ja tekst kõrvuti */
+.news-side {
+	display: flex;
+	gap: 24px;
+	align-items: flex-start;
+}
+.news-side img {
+	flex: none;
+	width: 400px;
+	max-width: 45%;
+	height: auto;
+	margin: 0;
+	border-radius: 14px;
+}
+.news-side .news-body { flex: 1; min-width: 0; }
+.news-side .news-body h2 { margin-top: 0; }
+
 /* ===== Telefon ===== */
 @media (max-width: 700px) {
 	h1 { font-size: 1.9rem; }
 	.hero-row { grid-template-columns: 1fr; }
 	.corner-gif { justify-self: center; }
 	.quote { font-size: 1.5rem; }
+		.news-side { flex-direction: column; }
+	.news-side img { max-width: 100%; width: 100%; }
+		.lightbox-prev { left: 8px; }
+	.lightbox-next { right: 8px; }
+	.lightbox-btn { width: 44px; height: 44px; }
 }

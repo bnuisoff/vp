@@ -54,4 +54,8 @@ app.use('/signin', signinRouter);
 const homeRouter = require('./routes/homeRoutes');
 app.use('/home', checkLogin.isLogin, homeRouter);
 
+// uudised (ainult sisseloginud kasutajale)
+const newsRouter = require('./routes/newsRoutes');
+app.use('/news', checkLogin.isLogin, newsRouter);
+
 app.listen(5215);

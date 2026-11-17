@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Uudised</title>
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="page">
+	<div class="topbar">
+		<%- include('partials/nav', { active: 'uudised' }) %>
+	</div>
+
+	<h1>Uudised</h1>
+
+	<% if (newsList.length === 0) { %>
+		<div class="card"><p>Uudiseid pole hetkel lisatud.</p></div>
+	<% } else { %>
+		<% newsList.forEach(n => { %>
+			<div class="card news-item">
+				<h2><%= n.news_title %></h2>
+				<p class="news-meta">Lisatud <%= n.created.toLocaleDateString('et-EE') %>, lisaja: <%= n.firstname %> <%= n.lastname %></p>
+				<% if (n.filename) { %>
+					<img src="/news/normal/<%= n.filename %>" alt="<%= n.alttext %>">
+				<% } %>
+				<p><%= n.news_text %></p>
+			</div>
+		<% }); %>
+	<% } %>
+
+	<div class="btn-row">
+		<a class="btn btn-pink" href="/news/addnews">Lisa uudis</a>
+	</div>
+</div>
+</body>
+</html>
