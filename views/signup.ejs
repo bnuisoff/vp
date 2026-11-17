@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Loo kasutajakonto</title>
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="page">
+		<div class="topbar">
+		<%- include('partials/nav', { active: 'konto' }) %>
+	</div>
+	<h1>Loo kasutajakonto</h1>
+
+	<div class="card form">
+		<form method="POST">
+			<div class="field">
+				<label for="firstNameInput">Sisesta oma eesnimi:</label>
+				<input type="text" id="firstNameInput" name="firstNameInput" placeholder="Eesnimi ..." value="<%= formData.firstName || '' %>" required>
+			</div>
+
+			<div class="field">
+				<label for="lastNameInput">Sisesta oma perekonnanimi:</label>
+				<input type="text" id="lastNameInput" name="lastNameInput" placeholder="Perekonnanimi ..." value="<%= formData.lastName || '' %>" required>
+			</div>
+
+			<div class="field">
+				<label for="birthDateInput">Sisesta sünnikuupäev:</label>
+				<input type="date" id="birthDateInput" name="birthDateInput" value="<%= formData.birthDate || '' %>" required>
+			</div>
+
+			<div class="field">
+				<label>Sugu:</label>
+				<div>
+					<input type="radio" id="genderInput1" name="genderInput" value="1" <%= formData.gender !== '2' ? 'checked' : '' %>>
+					<label for="genderInput1">Mees</label>
+					<input type="radio" id="genderInput2" name="genderInput" value="2" <%= formData.gender === '2' ? 'checked' : '' %>>
+					<label for="genderInput2">Naine</label>
+				</div>
+			</div>
+
+			<div class="field">
+				<label for="emailInput">E-mail (kasutajatunnuseks)</label>
+				<input type="email" id="emailInput" name="emailInput" placeholder="Sinu e-mail ...." value="<%= formData.email || '' %>" required>
+			</div>
+
+			<div class="field">
+				<label for="passwordInput">Salasõna (min 8 märki)</label>
+				<input type="password" id="passwordInput" name="passwordInput" required>
+			</div>
+
+			<div class="field">
+				<label for="confirmPasswordInput">Korda salasõna</label>
+				<input type="password" id="confirmPasswordInput" name="confirmPasswordInput" required>
+			</div>
+
+			<input class="btn btn-pink" type="submit" id="userSubmit" name="userSubmit" value="Loo kasutajakonto">
+		</form>
+
+		<p class="notice"><%= notice %></p>
+	</div>
+</div>
+</body>
+</html>

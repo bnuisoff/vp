@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sofia Jürgenson, fotode üleslaadimine</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="page">
+
+    <div class="topbar">
+        <%- include('partials/nav', { active: 'galerii' }) %>
+    </div>
+
+    <h1>Fotode üleslaadimine</h1>
+
+    <div class="card">
+        <form class="form" action="/galleryphotos/upload" method="POST" enctype="multipart/form-data">
+            <div class="field">
+                <label for="photoInput">Vali pilt</label>
+                <input type="file" id="photoInput" name="photoInput" accept="image/jpeg,image/png,image/gif" required>
+            </div>
+            <div class="field">
+                <label for="altInput">Pildi kirjeldus</label>
+                <input type="text" id="altInput" name="altInput">
+            </div>
+            <div class="field">
+                <label for="privacyInput">Kes näeb pilti?</label>
+                <select id="privacyInput" name="privacyInput">
+                    <option value="1">Ainult mina</option>
+                    <option value="2">Sisseloginud</option>
+                    <option value="3">Kõik</option>
+                </select>
+            </div>
+            <input class="btn btn-pink" type="submit" value="Lae pilt üles">
+        </form>
+        <p class="notice"><%= notice %></p>
+    </div>
+
+</div>
+</body>
+</html>

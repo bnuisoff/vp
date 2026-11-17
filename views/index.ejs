@@ -15,8 +15,28 @@
 	</div>
 
 	<img class="banner" src="/pic/veebiprogrammeerimine_2026_ID.png" alt="Veebiprogrammeerimine bänner">
+	
 
-	<h1>Sofia Jürgenson, veebiprogrammeerimise kursusel</h1>
+	<% if (photos.length > 0) { %>
+<div class="strip">
+    <button type="button" class="strip-btn" onclick="document.getElementById('stripList').scrollBy({ left: -300, behavior: 'smooth' })">‹</button>
+    <div class="strip-list" id="stripList">
+        <% photos.forEach(photo => { %>
+            <a href="/galleryphotos">
+                <img src="/gallery/thumbs/<%= photo.filename %>" alt="<%= photo.alttext %>" title="<%= photo.alttext %>">
+            </a>
+        <% }); %>
+    </div>
+    <button type="button" class="strip-btn" onclick="document.getElementById('stripList').scrollBy({ left: 300, behavior: 'smooth' })">›</button>
+</div>
+<% } %>
+<% if (photo) { %>
+    <h2>Uusim avalik foto</h2>
+    <img class="photo" src="/gallery/normal/<%= photo.filename %>" alt="<%= photo.alttext || 'Uusim avalik foto' %>">
+<% } %>
+
+
+	<h1>Sofia Jürgenson, veebiprogrammeerimise kursus</h1>
 	<p>See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu</p>
 
 	<img class="photo" src="/pic/soovad.gif" alt="nomnom">

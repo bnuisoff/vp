@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Tere tulemast!</title>
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="page">
+	<div class="topbar">
+		<%- include('partials/nav', { active: 'konto' }) %>
+	</div>
+
+	<h1>Tere tulemast!</h1>
+
+	<div class="card">
+		<p>Sisselogimine õnnestus.</p>
+	</div>
+
+	<div class="btn-row">
+		<a class="btn btn-purple" href="/">Avalehele</a>
+	</div>
+</div>
+</body>
+</html>

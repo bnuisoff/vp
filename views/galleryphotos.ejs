@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sofia Jürgenson, galerii</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="page">
+
+    <div class="topbar">
+        <%- include('partials/nav', { active: 'galerii' }) %>
+    </div>
+
+    <h1>Galerii</h1>
+
+    <% if (photos.length === 0) { %>
+        <p class="notice">Pilte pole veel üles laaditud.</p>
+    <% } else { %>
+        <div class="gallery">
+            <% photos.forEach(photo => { %>
+                <figure class="gallery-item">
+                    <a href="/gallery/normal/<%= photo.filename %>" target="_blank">
+                        <img src="/gallery/thumbs/<%= photo.filename %>" alt="<%= photo.alttext %>">
+                    </a>
+                    <% if (photo.alttext) { %>
+                        <figcaption><%= photo.alttext %></figcaption>
+                    <% } %>
+                </figure>
+            <% }); %>
+        </div>
+    <% } %>
+
+    <div class="btn-row">
+        <a class="btn btn-pink" href="/galleryphotos/upload">Lisa pilt</a>
+    </div>
+
+</div>
+</body>
+</html>

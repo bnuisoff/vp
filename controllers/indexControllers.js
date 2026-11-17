@@ -1,6 +1,14 @@
 const fs = require('fs').promises;
 const path = require('path');
 const dateTimeET = require('../src/dateTimeET.js');
+const mysql = require('mysql2/promise');
+
+const dbConf = {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE
+};
 
 const vanasonaFail = path.join(__dirname, '..', 'public', 'txt', 'vanasonad.txt');
 /*const visitsFail = path.join(__dirname, '..', 'visits.txt');*/
@@ -8,12 +16,35 @@ const vanasonaFail = path.join(__dirname, '..', 'public', 'txt', 'vanasonad.txt'
 //@desc home page
 //@route GET /
 //@access public
-const index = (req, res) => {
-	res.render('index', {
-		day: dateTimeET.day(),
-		date: dateTimeET.date(),
-		time: dateTimeET.time()
-	});
+const index = async (req, res) => {
+    let conn;
+    let photos = [];
+    let photo = null;
+    try {
+        conn = await mysql.createConnection(dbConf);
+        // kõik avalikud fotod (pisipiltide riba jaoks)
+        const [rows] = await conn.execute(
+            'SELECT filename, alttext FROM galleryphotos WHERE privacy = 3 AND deleted IS NULL ORDER BY id DESC'
+        );
+        photos = rows;
+        // uusim avalik foto
+        const [newest] = await conn.execute(
+            'SELECT filename, alttext FROM galleryphotos WHERE id=(SELECT MAX(id) FROM galleryphotos WHERE privacy=? AND deleted IS NULL)',
+            [3]
+        );
+        if (newest.length > 0) photo = newest[0];
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (conn) await conn.end();
+    }
+    res.render('index', {
+        day: dateTimeET.day(),
+        date: dateTimeET.date(),
+        time: dateTimeET.time(),
+        photos: photos,
+        photo: photo
+    });
 };
 
 //@desc about me page
